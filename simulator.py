@@ -211,9 +211,9 @@ class Simulation:
                     avgService += (((self.Queues)[i]).get_service_time()) / (((self.Queues)[i]).get_num_tested())
                 if (((self.Queues)[i]).get_clk()) != 0.0:
                     avgArrivals += (((self.Queues)[i]).get_num_arrivals()) / (((self.Queues)[i]).get_clk())
-        pWaitTime = avgWaitTime / self.numOfQueues
-        pServiceTime = avgService / self.numOfQueues
-        pArrivals = avgArrivals / self.numOfQueues
+        pWaitTime = avgWaitTime  # do not divide with the number of queues because only one queue is running
+        pServiceTime = avgService 
+        pArrivals = avgArrivals 
         
         pString = str(self.NumOfTested) + " "   #OK
 
@@ -224,12 +224,13 @@ class Simulation:
         for i in range(len(self.Prob_vec)):
             for j in range(self.numOfQueues):
                 Ti[i] += (((self.Queues)[j]).get_prob_i(i))
-            Ti[i] /=  (self.numOfQueues)
-        pString += str(Ti[0]) + " " #T0
+            if i !=0:
+                Ti[i] /=  (self.numOfQueues)
+        #pString += str(Ti[0]) + " " #T0
         for time in Ti:    #Ati
             pString  += str(time) + " "
         
-        pString += str((self.clock)/(Ti[0])) + " " #Z0        
+        #pString += str((Ti[0])/(self.clock)) + " " #Z0        
         for time in Ti:    #Zi
             pString  += str(time/self.clock) + " "
 
